@@ -1,13 +1,16 @@
 import React from "react";
 import { BiListPlus } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { AddToCart } from "../Redux/ActionCreatores/ProductAction";
-import { ADD_TO_CART } from "../Redux/actionTypes/actionTypes";
+import { useLocation } from "react-router-dom";
+import { AddToCart, RemoveCart } from "../Redux/ActionCreatores/ProductAction";
+
 
 
 const ProductCard = ({ product }) => {
 
-   const dispatch = useDispatch()
+   const dispatch = useDispatch();
+   const {pathname} = useLocation();
+
 
 
   return (
@@ -26,19 +29,26 @@ const ProductCard = ({ product }) => {
         </ul>
       </div>
       <div className='flex gap-2 mt-5'>
-        <button
+     { pathname.includes('/') && !pathname.includes('/cart') && <button
         onClick={()=>dispatch(AddToCart(product))}
-          className='bg-indigo-500 rounded-full py-1 px-2 flex-1 text-white text-bold'
+          className='bg-indigo-500 rounded-full  flex-1 text-white text-bold'
         
         >
           Add to cart
-        </button>
-        <button
+        </button>}
+      { pathname.includes('/cart')  && <button
+        onClick={()=>dispatch(RemoveCart(product._id))}
+          className='bg-indigo-500 rounded-full flex-1 text-white text-bold'
+        
+        >
+           Remove 
+        </button>}  
+      { pathname.includes('/')  && !pathname.includes('/cart') &&  <button
           title='Add to wishlist'
           className='bg-indigo-500  py-1 px-2 rounded-full'
         >
           <BiListPlus className='text-white' />
-        </button>
+        </button>}
       </div>
     </div>
   );
