@@ -6,11 +6,12 @@ const initialState = {
 
 const ProductReducer = (state = initialState, action) => {
    const selectedProduct = state.cart.find(p=>p._id === action.payload._id)
-   console.log('selected products',selectedProduct);
+   // console.log('selected products',selectedProduct);
+   console.log('aciton', action);
    switch(action.type){
      case ADD_TO_CART :
-      const newcart = state.cart.filter (pd =>pd._id !== action.payload._id)
         if(selectedProduct){
+           const newcart = state.cart.filter (pd =>pd._id !== selectedProduct._id)
          selectedProduct.quantity = selectedProduct.quantity + 1;
          return {
             ...state,
@@ -22,10 +23,19 @@ const ProductReducer = (state = initialState, action) => {
          cart : [...state.cart, {...action.payload, quantity:1}]
      }
      case REMOVE_FROM_CART :
+      if(selectedProduct.quantity > 1 ){
+         const newcart = state.cart.filter (pd =>pd._id !== selectedProduct._id)
+       selectedProduct.quantity = selectedProduct.quantity - 1;
+       return {
+          ...state,
+          cart: [...newcart, selectedProduct]
+       } ;
+      }
       return {
          ...state,
-         cart:  state.cart.filter((item) =>item._id !== action.payload)
+         cart:  state.cart.filter((item) =>item._id !== action.payload._id)
       }
+   
      default:
         return state;
 
