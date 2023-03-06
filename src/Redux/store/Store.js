@@ -1,5 +1,10 @@
 import { composeWithDevTools } from "@redux-devtools/extension";
-import { createStore } from "redux";
-import ProductReducer from "../Reducer/ProuductReducer";
+import { applyMiddleware, createStore } from "redux";
+import logger from "redux-logger";
+import { cartCounter } from "../middleware/cartCounter";
+import { rootReducer } from "../Reducer/RootReducer/rootReducer";
 
-export const store = createStore(ProductReducer, composeWithDevTools())
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(cartCounter))
+);

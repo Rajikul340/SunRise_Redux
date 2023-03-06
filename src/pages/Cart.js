@@ -1,20 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 
 const Cart = () => {
 
-  const cart = useSelector((state)=>state.cart);
-  const {pathname}  = useLocation();
-  console.log(pathname);
+  const cart = useSelector((state)=>state.product.cart);
+  // console.log(cart);
 
 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-7xl gap-4 mx-auto my-10">
    {
-    cart.sort((a, b)=>a._id-b._id).map(product =><ProductCard product={product}/>)
+    cart.sort((a, b)=>a._id - b._id).map(product =><ProductCard product={product}/>)
    }
   </div>
   );
