@@ -5,43 +5,49 @@ import {
   toggleBrand,
   toggleStock,
 } from "../Redux/ActionCreatores/FilterAction";
+import fetchProduct from "../Redux/thunk/products/fetchProduct";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  // console.log(products);]
   const dispatch = useDispatch();
   const { filters } = useSelector((state) => state.filter);
-  console.log(filters);
+  const products = useSelector((state) => state.product.products);
   const { brands, stock } = filters;
-  //  console.log(brands);
+  const search = useSelector((state) => state.product.search);
+  console.log("query", search);
 
   useEffect(() => {
-    fetch("http://localhost:5000/product")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    dispatch(fetchProduct());
+  }, [dispatch]);
+
+
 
   const activeClass = "text-white  bg-indigo-500 border-white";
 
   let content;
 
-  if (products.length) {
-    content = products.map((product) => (
+  if (products) {
+    content = products?.map((product) => (
       <ProductCard key={product.model} product={product} />
     ));
   }
 
-  if (products.length && (stock || brands.length)) {
+  if (search) {
+    content = products?.filter(p=>p.model.toLowerCase().includes(search.toLowerCase())).map((product) => (
+      <ProductCard key={product.model} product={product} />
+    ));
+  }
+
+  if (products && (stock || brands.length)) {
     content = products
       .filter((product) => {
-       if(stock){
-        return product.status === true
-       }
-       return product;
+        if (stock) {
+          return product.status === true;
+        }
+        return product;
       })
-      .filter((product)=>{
-        if(brands.length){
-          return brands.includes(product.brand)
+      .filter((product) => {
+        if (brands.length) {
+          return brands.includes(product.brand);
         }
         return product;
       })

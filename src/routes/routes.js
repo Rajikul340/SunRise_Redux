@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
+import AddProduct from "../components/AddProduct";
+import ProductList from "../components/ProductList";
 import Dashboard from "../layout/Dashboard/Dashboard";
 import Main from "../layout/Main/Main";
 import About from "../pages/About";
 import Cart from "../pages/Cart";
-import AddProduct from "../pages/Dashboard/AddProduct";
 import Home from "../pages/Home";
 
 
@@ -38,6 +39,10 @@ const routes = createBrowserRouter([
    {
      path:"add-product",
      element:<AddProduct/>
+   },
+   {
+    path:"/dashboard",
+    element:<ProductList/>
    }
     ]
   }

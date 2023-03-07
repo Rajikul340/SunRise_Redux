@@ -6,7 +6,7 @@ export const cartCounter = (store) => (next) => (action) => {
   if (action.type === ADD_TO_CART) {
     const newAction = {
       ...action,
-      payload: { ...action.payload, cartPostion: cart.length },
+      payload: { ...action.payload, cartPosition: cart.length },
     };
 
     return next(newAction);

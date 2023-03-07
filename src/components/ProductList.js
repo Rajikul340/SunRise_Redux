@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import deleteProduct from "../Redux/thunk/products/deleteProduct";
+import fetchProduct from "../Redux/thunk/products/fetchProduct";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
+  const products = useSelector((state) => state.product.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch("http://localhost:5000/Allproducts")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
+    dispatch(fetchProduct());
   });
 
   return (
@@ -67,7 +69,9 @@ const ProductList = () => {
                   </td>
                   <td class='p-2'>
                     <div class='flex justify-center'>
-                      <button>
+                      <button
+                       onClick={() => dispatch(deleteProduct(_id))}
+                       >
                         <svg
                           class='w-8 h-8 hover:text-blue-600 rounded-full hover:bg-gray-100 p-1'
                           fill='none'

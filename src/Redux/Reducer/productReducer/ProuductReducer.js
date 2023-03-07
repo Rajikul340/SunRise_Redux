@@ -1,14 +1,37 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from "../../actionTypes/actionTypes";
+import { ADD_PRODUCT, ADD_TO_CART, LOAD_PRODUCT, REMOVE_FROM_CART, REMOVE_PRODUCT, SEARCH_PRODUCT } from "../../actionTypes/actionTypes";
 
 const initialState = {
    cart: [],
+   search:''
 };
 
 const ProductReducer = (state = initialState, action) => {
    const selectedProduct = state.cart.find(p=>p._id === action.payload._id)
-   // console.log('selected products',selectedProduct);
-   console.log('aciton', action);
+  
+// console.log('aciton', action.payload);
    switch(action.type){
+      case LOAD_PRODUCT:
+         return {
+            ...state,
+            products:action.payload
+         }
+      case SEARCH_PRODUCT:
+         return {
+            ...state,
+            search: action.payload
+         }
+
+         case ADD_PRODUCT:
+            return {
+               ...state,
+               products: [...state.products, action.payload]
+            }
+         case REMOVE_PRODUCT:
+            return {
+               ...state,
+               products: state.products.filter(p=>p._id !== action.payload)
+            }
+
      case ADD_TO_CART :
         if(selectedProduct){
            const newcart = state.cart.filter (pd =>pd._id !== selectedProduct._id)
